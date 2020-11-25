@@ -4,6 +4,7 @@ import cv2
 from PIL import Image,ImageEnhance
 import numpy as np 
 import os
+import random as rd
 
 @st.cache
 def load_image(img):
@@ -14,20 +15,26 @@ def load_image(img):
 face_cascade = cv2.CascadeClassifier('frecog/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('frecog/haarcascade_eye.xml')
 smile_cascade = cv2.CascadeClassifier('frecog/haarcascade_smile.xml')
+body_cascade = cv2.CascadeClassifier('frecog/haarcascade_fullbody.xml')
 
 def detect_faces(our_image):
 	new_img = np.array(our_image.convert('RGB'))
+	colors = np.random.uniform(0, 255, size=(10, 3))
+	colors = colors.tolist()
 	img = cv2.cvtColor(new_img,1)
 	gray = cv2.cvtColor(new_img, cv2.COLOR_BGR2GRAY)
 	# Detect faces
 	faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 	# Draw rectangle around the faces
 	for (x, y, w, h) in faces:
-				 cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+				 cv2.rectangle(img, (x, y), (x+w, y+h),rd.choice(colors), 2)
+				 # cv2.rectangle
+				 # cv2.rectangle(img,box,color=rd.choice(colors),thickness=2)
 	return img,faces 
 
 
 def detect_eyes(our_image):
+
 	new_img = np.array(our_image.convert('RGB'))
 	img = cv2.cvtColor(new_img,1)
 	gray = cv2.cvtColor(new_img, cv2.COLOR_BGR2GRAY)
@@ -69,11 +76,23 @@ def cannize_image(our_image):
 	canny = cv2.Canny(img, 100, 150)
 	return canny
 
+def full_body(our_image):
+	new_img = np.array(our_image.convert('RGB'))
+	colors = np.random.uniform(0, 255, size=(10, 3))
+	colors = colors.tolist()
+	new_img = np.array(our_image.convert('RGB'))
+	img = cv2.cvtColor(new_img,1)
+	gray = cv2.cvtColor(new_img, cv2.COLOR_BGR2GRAY)
+	eyes = body_cascade.detectMultiScale(gray, 1.3, 5)
+	for (ex,ey,ew,eh) in eyes:
+	        cv2.rectangle(img,(ex,ey),(ex+ew,ey+eh),rd.choice(colors),2)
+	return img
+
 def main():
 	"""Face Detection App"""
 
-	st.title("Face Detection App")
-	st.text("Build with Streamlit and OpenCV")
+	st.title("Face/Eye Editor and more editing App")
+	st.text("Built by Arnav")
 
 	activities = ["Detection","About"]
 	choice = st.selectbox("Select Activty",activities)
@@ -148,14 +167,19 @@ def main():
 				result_canny = cannize_image(our_image)
 				st.image(result_canny,width=300)
 
+			elif feature_choice=='Full Body':
+				result_img = full_body(our_image)
+				st.image(result_img,width=300)
+
+	st.text('This is still building dont be mad on wrong results :)')
+
 
 
 
 	elif choice == 'About':
 		st.subheader("About Face Detection App")
-		st.markdown("Built with Streamlit by [NILESH VERMA](https://nileshverma.com/)")
-		#st.text("Jesse E.Agbe(JCharis)")
-		#st.success("Jesus Saves @JCharisTech")
+		st.markdown("Built with Streamlit by [Arnav Mehta](2005arnavmehta2005@gmail.com)")
+
 
 
 
