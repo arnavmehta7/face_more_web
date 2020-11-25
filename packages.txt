@@ -1,5 +1,4 @@
 libxi-dev
 libxmu-dev
 libgtk2.0-dev
-libglut3-dev
-freeglut3-dev
+freeglut3
