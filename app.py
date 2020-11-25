@@ -171,7 +171,6 @@ def main():
 				result_img = full_body(our_image)
 				st.image(result_img,width=300)
 
-	st.text('This is still building dont be mad on wrong results :)')
 
 
 
