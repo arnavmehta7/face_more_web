@@ -1,12 +1,7 @@
-itsdangerous
-Jinja2
-MarkupSafe==1.1.1
-Werkzeug==0.15.5
 numpy
 scipy
 matplotlib
 pandas
-flasgger
 Pillow
-opencv-python
+opencv-python==4.2.0
 streamlit
