@@ -6,6 +6,9 @@ import numpy as np
 import os
 import random as rd
 
+IS_DARK_THEME = True
+
+
 @st.cache
 def load_image(img):
 	im = Image.open(img)
